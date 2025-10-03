@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido a MISH market</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .context-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ccc;
+            font-size: 0.9em;
+            color: #999;
+        }
+        .form-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>
+        Bienvenido a MISH market
+    </h1>
+    <p>
+        Donde podra comprar con tranquilidad!
+    </p>
+
+    <div class="form-container">
+        <!-- Form remains correct: POST to /start -->
+        <a th:href="@{/inicio}" class="btn">
+            VAMOS!
+            <span>&rarr;</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

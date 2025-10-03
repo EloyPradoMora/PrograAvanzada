@@ -14,7 +14,7 @@ public class PrograAvanzadaApplication {
 
     @RestController
     static class HolaMundoController {
-        @GetMapping("/")
+        @GetMapping("/holaMundo")
         public String holaMundo() {
             return "Hola Mundo";
         }
