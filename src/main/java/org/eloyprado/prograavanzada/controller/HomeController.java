@@ -4,16 +4,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.eloyprado.prograavanzada.repository.ProductoRepository;
-import usuario.Producto;
+
+import org.springframework.beans.factory.annotation.Autowired; 
+import org.eloyprado.prograavanzada.Repository.ProductoRepository; 
+import usuario.Producto; 
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.List; // Solo necesitamos List
 
 @Controller
 public class HomeController {
+
     @Autowired
     private ProductoRepository productoRepository;
 
@@ -24,8 +25,10 @@ public class HomeController {
 
     @GetMapping("/inicio")
     public String inicio(Model model){
-        List<Producto> productos = new ArrayList<Producto>();
-        List<Producto> productos = productoRepository.findAll();
+        // ANTES: Tenías la creación de ArrayList y la adición de productos hardcodeados
+        // AHORA: Usamos el repositorio de MongoDB
+        List<Producto> productos = productoRepository.findAll(); 
+        
         model.addAttribute("productos", productos);
         return "inicio";
     }
