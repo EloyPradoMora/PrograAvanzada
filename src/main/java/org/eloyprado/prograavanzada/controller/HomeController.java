@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.eloyprado.prograavanzada.repository.ProductoRepository;
 import usuario.Producto;
 
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Controller
 public class HomeController {
+    @Autowired
+    private ProductoRepository productoRepository;
 
     @GetMapping("/")
     public String index(){
@@ -21,9 +25,7 @@ public class HomeController {
     @GetMapping("/inicio")
     public String inicio(Model model){
         List<Producto> productos = new ArrayList<Producto>();
-        productos.add(new Producto("1", "Acer Nitro 5", 600000));
-        productos.add(new Producto("2", "Polera niño", 1000));
-        productos.add(new Producto("3", "De sodorante", 4000));
+        List<Producto> productos = productoRepository.findAll();
         model.addAttribute("productos", productos);
         return "inicio";
     }
