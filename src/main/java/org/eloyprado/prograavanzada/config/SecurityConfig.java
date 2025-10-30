@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth->{
-            auth.requestMatchers("/","/login", "/holaMundo").permitAll(); // Se agregó /holaMundo como permitida
+            auth.requestMatchers("/","/login", "/holaMundo","/register").permitAll(); // Se agregó /holaMundo como permitida
             auth.anyRequest().authenticated();
         })
                 .formLogin(form->form
