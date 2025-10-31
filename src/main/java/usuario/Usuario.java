@@ -19,6 +19,7 @@ public class Usuario implements UserDetails {
 
     // Constructor vacío
     public Usuario() {
+        this.role = "ROLE_USER";
     }
 
     public Usuario(String username, String password) {

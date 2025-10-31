@@ -18,7 +18,7 @@ public class PrograAvanzadaApplication {
     public static void main(String[] args) {
         SpringApplication.run(PrograAvanzadaApplication.class, args);
     }
-@Bean
+    @Bean
     public CommandLineRunner initialData(ProductoRepository repository) {
         return (args) -> {
             // Solo inserta si no hay productos
