@@ -21,6 +21,12 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
+    public Usuario(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.role = "ROLE_USER";
+    }
+
     // Constructor para inicialización
     public Usuario(String username, String password, String role) {
         this.username = username;
