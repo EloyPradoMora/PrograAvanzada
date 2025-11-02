@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.eloyprado.prograavanzada.Repository.ProductoRepository; 
@@ -88,5 +89,33 @@ public class HomeController {
             model.addAttribute("usuario", new Usuario(username, ""));
             return "register";
         }
+    }
+
+    @PostMapping("/products/add")
+    public String addProduct(
+            @RequestParam("nombre") String nombre,
+            @RequestParam("precio") int precio,
+            @RequestParam(value = "descripcion", required = false) String descripcion,
+            @RequestParam(value = "imagenUrl", required = false) String imagenUrl,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        try {
+            Producto nuevoProducto = new Producto();
+            nuevoProducto.setNombre(nombre);
+            nuevoProducto.setPrecio(precio);
+
+            //Descomentar la siguiente linea cuando tengamos como manejar imagenes:
+            // if (imagenUrl != null) nuevoProducto.setImagenUrl(imagenUrl);
+
+            if (descripcion != null) nuevoProducto.setDescripcion(descripcion);
+
+            productoRepository.save(nuevoProducto);
+            redirectAttributes.addFlashAttribute("successMessage", "¡Producto publicado con éxito!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al publicar el producto.");
+        }
+        return "redirect:/inicio";
     }
 }

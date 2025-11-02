@@ -56,4 +56,7 @@ public class Producto {
     public void setPrecio(int precio) {
         this.precio = precio;
     }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }
