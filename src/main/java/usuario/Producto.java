@@ -19,7 +19,8 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(String nombre, String descripcion, int cantidad, String tipo, String estado, boolean esVisible, String fechaPublicacion) {
+    public Producto(String nombre, String descripcion, int cantidad, String tipo, String estado, boolean esVisible,
+            String fechaPublicacion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
@@ -50,14 +51,20 @@ public class Producto {
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public void setPrecio(int precio) {
         this.precio = precio;
     }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public String getId(){return idProducto;};
+
+    public String getId() {
+        return idProducto;
+    };
 }

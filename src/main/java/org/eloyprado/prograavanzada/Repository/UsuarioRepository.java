@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 @Repository
 public interface UsuarioRepository extends MongoRepository<Usuario, String> {
-    
+
     /**
      * Método para buscar un usuario por su nombre de usuario.
      * (Implementa la funcionalidad de lectura de usuarios)

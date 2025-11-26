@@ -1,173 +1,52 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"> <head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro M.I.S.H</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .login-container {
-            display: flex;
-            width: 800px;
-            height: 500px;
-            background-color: #fff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .left-panel {
-            flex: 1;
-            background-color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .mish-button {
-            background-color: #a0a0a0;
-            color: #333;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: default;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .right-panel {
-            flex: 1;
-            background-color: #f8f8f8;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px;
-        }
-
-        .error-message {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            background-color: #fcebeb;
-            border: 1px solid #f09292;
-            color: #cc0000;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .success-message {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            background-color: #e6ffed;
-            border: 1px solid #7ed99e;
-            color: #008000;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .form-group input[type="text"],
-        .form-group input[type="password"] {
-            width: 100%;
-            padding: 12px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
-        .login-button {
-            width: 100%;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 15px;
-            height: 50px;
-            box-sizing: border-box;
-            background-color: #333;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-button:hover {
-            background-color: #555;
-        }
-
-        .back-to-login {
-            background-color: #a0a0a0;
-            margin-top: 10px;
-        }
-        .back-to-login:hover {
-            background-color: #c0c0c0;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-<div class="login-container">
-    <div class="left-panel">
-        <button class="mish-button">M.I.S.H</button>
-    </div>
 
-    <div class="right-panel">
-
-        <div th:if="${error}" class="error-message" style="margin-top: -20px;">
-            <p th:text="${error}"></p>
+<body class="auth-page">
+    <div class="login-container">
+        <div class="left-panel">
+            <button class="mish-button">M.I.S.H</button>
         </div>
 
-        <div th:if="${success}" class="success-message" style="margin-top: -20px;">
-            <p th:text="${success}"></p>
-        </div>
+        <div class="right-panel">
 
-        <form th:unless="${success}" method="post" th:action="@{/register}" style="width: 100%;" th:object="${usuario}">
-            <div class="form-group">
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" th:field="*{username}" placeholder="Nombre de Usuario" required>
+            <div th:if="${error}" class="error-message" style="margin-top: -20px;">
+                <p th:text="${error}"></p>
             </div>
-            <div class="form-group">
-                <label for="password">Clave</label>
-                <input type="password" id="password" name="password" placeholder="Contraseña" required>
+
+            <div th:if="${success}" class="success-message" style="margin-top: -20px;">
+                <p th:text="${success}"></p>
             </div>
-            <div class="form-group">
-                <label for="passwordAgain">Repita su clave</label>
-                <input type="password" id="passwordAgain" name="passwordAgain" placeholder="Repita Contraseña" required>
-            </div>
-            <button type="submit" class="login-button">Registrar</button>
-        </form>
-        <a th:if="${success}" th:href="@{/login}" class="login-button back-to-login">
-            Volver al Login
-        </a>
+
+            <form th:unless="${success}" method="post" th:action="@{/register}" style="width: 100%;"
+                th:object="${usuario}">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" th:field="*{username}"
+                        placeholder="Nombre de Usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Clave</label>
+                    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label for="passwordAgain">Repita su clave</label>
+                    <input type="password" id="passwordAgain" name="passwordAgain" placeholder="Repita Contraseña"
+                        required>
+                </div>
+                <button type="submit" class="login-button">Registrar</button>
+            </form>
+            <a th:if="${success}" th:href="@{/login}" class="login-button back-to-login">
+                Volver al Login
+            </a>
+        </div>
     </div>
-</div>
 </body>
+
 </html>

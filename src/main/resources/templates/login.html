@@ -1,159 +1,42 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"> <head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login M.I.S.H</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .login-container {
-      display: flex;
-      width: 800px;
-      height: 500px;
-      background-color: #fff;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .left-panel {
-      flex: 1;
-      background-color: #e0e0e0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .mish-button {
-      background-color: #a0a0a0;
-      color: #333;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.2em;
-      font-weight: bold;
-      cursor: default;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .right-panel {
-      flex: 1;
-      background-color: #f8f8f8;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px;
-    }
-
-    .error-message {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      background-color: #fcebeb;
-      border: 1px solid #f09292;
-      color: #cc0000;
-      border-radius: 5px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      width: 100%;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #555;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="password"] {
-      width: 100%;
-      padding: 12px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1em;
-      box-sizing: border-box;
-    }
-
-    .login-button, .github-button {
-      width: 100%;
-      padding: 15px 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.1em;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 15px;
-      height: 50px;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-    }
-
-    .login-button {
-      background-color: #333;
-      color: white;
-    }
-
-    .login-button:hover {
-      background-color: #555;
-    }
-
-    .github-button {
-      background-color: #333;
-      color: white;
-    }
-
-    .github-button:hover {
-      background-color: #555;
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-<div class="login-container">
-  <div class="left-panel">
-    <button class="mish-button">M.I.S.H</button>
-  </div>
 
-  <div class="right-panel">
-
-    <div th:if="${loginError}" class="error-message" style="margin-top: -20px;">
-      Usuario o clave no válidos. Inténtelo de nuevo.
+<body class="auth-page">
+  <div class="login-container">
+    <div class="left-panel">
+      <button class="mish-button">M.I.S.H</button>
     </div>
 
-    <form method="post" th:action="@{/login}" style="width: 100%;">
-      <div class="form-group">
-        <label for="username">Usuario</label>
-        <input type="text" id="username" name="username" placeholder="Nombre de Usuario" required>
+    <div class="right-panel">
+
+      <div th:if="${loginError}" class="error-message" style="margin-top: -20px;">
+        Usuario o clave no válidos. Inténtelo de nuevo.
       </div>
-      <div class="form-group">
-        <label for="password">Clave</label>
-        <input type="password" id="password" name="password" placeholder="Contraseña" required>
-      </div>
-      <button type="submit" class="login-button">Entrar</button>
-    </form>
-    <a th:href="@{/oauth2/authorization/github}" class="github-button">Ingresar con GitHub</a>
-    <a th:href="@{/register}" class="login-button">
-      Registrar!
-    </a>
+
+      <form method="post" th:action="@{/login}" style="width: 100%;">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input type="text" id="username" name="username" placeholder="Nombre de Usuario" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Clave</label>
+          <input type="password" id="password" name="password" placeholder="Contraseña" required>
+        </div>
+        <button type="submit" class="login-button">Entrar</button>
+      </form>
+      <a th:href="@{/oauth2/authorization/github}" class="github-button">Ingresar con GitHub</a>
+      <a th:href="@{/register}" class="login-button">
+        Registrar!
+      </a>
+    </div>
   </div>
-</div>
 </body>
+
 </html>
