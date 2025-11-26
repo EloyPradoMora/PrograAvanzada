@@ -59,4 +59,5 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    public String getId(){return idProducto;};
 }

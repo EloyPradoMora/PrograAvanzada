@@ -63,6 +63,12 @@ public class HomeController {
             @RequestParam("passwordAgain") String passwordAgain,
             Model model
     ) {
+        //Ver que nombre no este vacio
+        if (username == null || username.trim().isEmpty()) {
+            model.addAttribute("error", "El nombre de usuario no puede estar vacío.");
+            model.addAttribute("usuario", new Usuario());
+            return "register";
+        }
         //Ver que las contraseñas coincidan
         if (!password.equals(passwordAgain)) {
             model.addAttribute("error", "Las contraseñas no coinciden. Inténtalo de nuevo.");

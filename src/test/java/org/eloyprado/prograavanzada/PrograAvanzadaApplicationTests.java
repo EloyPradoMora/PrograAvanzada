@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import usuario.Producto;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -38,5 +41,26 @@ class PrograAvanzadaApplicationTest {
         runner.run();
 
         verify(mockRepo, never()).saveAll(any());
+    }
+
+    @Test
+    void initialData_InsertsCorrectProducts_WhenEmpty() throws Exception {
+        ProductoRepository repo = mock(ProductoRepository.class);
+
+        when(repo.count()).thenReturn(0L);
+
+        PrograAvanzadaApplication app = new PrograAvanzadaApplication();
+        CommandLineRunner runner = app.initialData(repo);
+
+        runner.run();
+
+        verify(repo, times(1)).saveAll(argThat(iterable -> {
+            List<Producto> list = (List<Producto>) iterable;
+
+            return list.size() == 3 &&
+                    list.get(0).getNombre().equals("Acer Nitro 5") &&
+                    list.get(1).getPrecio() == 1000 &&
+                    list.get(2).getId().equals("3");
+        }));
     }
 }
