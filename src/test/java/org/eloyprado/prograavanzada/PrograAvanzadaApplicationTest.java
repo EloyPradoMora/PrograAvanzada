@@ -1,9 +1,9 @@
 package org.eloyprado.prograavanzada;
 
 import org.eloyprado.prograavanzada.Repository.ProductoRepository;
+import org.eloyprado.prograavanzada.config.DataInitializer;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import usuario.Producto;
 
@@ -15,17 +15,16 @@ import static org.mockito.Mockito.*;
 class PrograAvanzadaApplicationTest {
 
     @Test
-    void contextLoads() {}
+    void contextLoads() {
+    }
 
     @Test
     void initialData_insertsProducts_whenRepositoryIsEmpty() throws Exception {
         ProductoRepository mockRepo = Mockito.mock(ProductoRepository.class);
         when(mockRepo.count()).thenReturn(0L);
 
-        PrograAvanzadaApplication app = new PrograAvanzadaApplication();
-        CommandLineRunner runner = app.initialData(mockRepo);
-
-        runner.run();
+        DataInitializer initializer = new DataInitializer(mockRepo);
+        initializer.run();
 
         verify(mockRepo, times(1)).saveAll(any());
     }
@@ -35,10 +34,8 @@ class PrograAvanzadaApplicationTest {
         ProductoRepository mockRepo = Mockito.mock(ProductoRepository.class);
         when(mockRepo.count()).thenReturn(5L);
 
-        PrograAvanzadaApplication app = new PrograAvanzadaApplication();
-        CommandLineRunner runner = app.initialData(mockRepo);
-
-        runner.run();
+        DataInitializer initializer = new DataInitializer(mockRepo);
+        initializer.run();
 
         verify(mockRepo, never()).saveAll(any());
     }
@@ -49,10 +46,8 @@ class PrograAvanzadaApplicationTest {
 
         when(repo.count()).thenReturn(0L);
 
-        PrograAvanzadaApplication app = new PrograAvanzadaApplication();
-        CommandLineRunner runner = app.initialData(repo);
-
-        runner.run();
+        DataInitializer initializer = new DataInitializer(repo);
+        initializer.run();
 
         verify(repo, times(1)).saveAll(argThat(iterable -> {
             List<Producto> list = (List<Producto>) iterable;

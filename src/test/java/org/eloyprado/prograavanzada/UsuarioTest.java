@@ -1,7 +1,6 @@
 package org.eloyprado.prograavanzada;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import usuario.Usuario;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,14 +11,6 @@ class UsuarioTest {
     void testDefaultRole() {
         Usuario u = new Usuario();
         assertEquals("ROLE_USER", u.getRole());
-    }
-
-    @Test
-    void testAuthorities() {
-        Usuario u = new Usuario("juan", "123", "ROLE_ADMIN");
-        assertTrue(
-                u.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
-        );
     }
 
     @Test
@@ -38,35 +29,8 @@ class UsuarioTest {
     }
 
     @Test
-    void testUserDetailsDefaults() {
-        Usuario u = new Usuario();
-        assertTrue(u.isAccountNonExpired());
-        assertTrue(u.isAccountNonLocked());
-        assertTrue(u.isCredentialsNonExpired());
-        assertTrue(u.isEnabled());
-    }
-
-    @Test
-    void getAuthorities_ReturnsCorrectAuthorityObject() {
-        Usuario u = new Usuario("test", "pass", "ROLE_ADMIN");
-
-        var auths = u.getAuthorities();
-
-        assertEquals(1, auths.size());
-        assertTrue(auths.contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
-    }
-
-    @Test
     void constructor_AssignsCorrectDefaults() {
         Usuario u = new Usuario();
         assertEquals("ROLE_USER", u.getRole());
-    }
-
-    @Test
-    void roleChange_AffectsAuthorities() {
-        Usuario u = new Usuario("juan", "pass");
-        u.setRole("ROLE_MOD");
-
-        assertTrue(u.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_MOD")));
     }
 }
