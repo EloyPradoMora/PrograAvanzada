@@ -15,6 +15,7 @@ public class Producto {
     private String estado;
     private boolean esVisible;
     private String fechaPublicacion;
+    private String imagenUrl;
 
     public Producto() {
     }
@@ -67,4 +68,8 @@ public class Producto {
     public String getId() {
         return idProducto;
     };
+
+    public String getImagenUrl() {return imagenUrl;}
+
+    public void setImagenUrl(String imagenUrl) {this.imagenUrl = imagenUrl;}
 }
