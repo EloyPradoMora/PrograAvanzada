@@ -40,8 +40,13 @@
     <h1>Opciones</h1>
     <ul class="product-list">
       <li th:each="producto : ${productos}" class="product-item">
-        <div class="product-image-placeholder">
-          IMAGEN
+        <div class="product-image-container">
+          <img th:if="${producto.imagenUrl != null and !producto.imagenUrl.isEmpty()}" th:src="@{${producto.imagenUrl}}"
+            alt="Imagen del producto" class="product-image">
+          <div th:unless="${producto.imagenUrl != null and !producto.imagenUrl.isEmpty()}"
+            class="product-image-placeholder">
+            IMAGEN
+          </div>
         </div>
         <div class="product-name" th:text="${producto.nombre}">
           NOMBRE DE PRODUCTO
@@ -61,7 +66,7 @@
       <span class="close-button" onclick="closeModal()">&times;</span>
       <h2>Publicar Nuevo Producto</h2>
 
-      <form th:action="@{/products/add}" method="post">
+      <form th:action="@{/products/add}" method="post" enctype="multipart/form-data">
         <div class="form-group">
           <label for="nombre">Nombre del Producto:</label>
           <input type="text" id="nombre" name="nombre" required>
@@ -75,8 +80,11 @@
           <input type="number" id="precio" name="precio" min="1" step="1" placeholder="Ej: 10000" required>
         </div>
         <div class="form-group">
-          <label for="imagen">URL de la Imagen (temporal):</label>
-          <input type="text" id="imagen" name="imagenUrl">
+          <label>Imagen del Producto:</label>
+          <div class="drop-zone">
+            <span class="drop-zone__prompt">Arrastra el archivo aquí o haz clic para subir</span>
+            <input type="file" name="imagen" class="drop-zone__input" required>
+          </div>
         </div>
 
         <button type="submit" class="submit-button">Guardar Producto</button>
@@ -97,6 +105,69 @@
     window.onclick = function (event) {
       if (event.target == modal) {
         closeModal();
+      }
+    }
+
+    document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+      const dropZoneElement = inputElement.closest(".drop-zone");
+
+      dropZoneElement.addEventListener("click", (e) => {
+        inputElement.click();
+      });
+
+      inputElement.addEventListener("change", (e) => {
+        if (inputElement.files.length) {
+          updateThumbnail(dropZoneElement, inputElement.files[0]);
+        }
+      });
+
+      dropZoneElement.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZoneElement.classList.add("drop-zone--over");
+      });
+
+      ["dragleave", "dragend"].forEach((type) => {
+        dropZoneElement.addEventListener(type, (e) => {
+          dropZoneElement.classList.remove("drop-zone--over");
+        });
+      });
+
+      dropZoneElement.addEventListener("drop", (e) => {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+          inputElement.files = e.dataTransfer.files;
+          updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+        }
+
+        dropZoneElement.classList.remove("drop-zone--over");
+      });
+    });
+
+    function updateThumbnail(dropZoneElement, file) {
+      let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+      if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+        dropZoneElement.querySelector(".drop-zone__prompt").remove();
+      }
+
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+      }
+
+      thumbnailElement.dataset.label = file.name;
+
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+        };
+      } else {
+        thumbnailElement.style.backgroundImage = null;
       }
     }
   </script>
