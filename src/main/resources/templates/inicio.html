@@ -54,6 +54,11 @@
         <div class="product-price" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">
           $1000
         </div>
+        <div class="product-publisher" th:if="${producto.publisherUsername != null}"
+          th:text="'Publicado por: ' + ${producto.publisherUsername}"
+          style="font-size: 0.8em; color: gray; margin-top: 5px;">
+          Publicado por: Usuario
+        </div>
         <a th:href="@{'/product/' + ${producto.idProducto}}"
           style="color: blue; font-size: 0.8em; margin-top: 5px; display: inline-block; text-decoration: none; border-bottom: 1px dotted blue;">
           Ver Detalle

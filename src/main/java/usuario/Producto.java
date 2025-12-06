@@ -16,6 +16,7 @@ public class Producto {
     private boolean esVisible;
     private String fechaPublicacion;
     private String imagenUrl;
+    private String publisherUsername;
 
     public Producto() {
     }
@@ -72,4 +73,13 @@ public class Producto {
     public String getImagenUrl() {return imagenUrl;}
 
     public void setImagenUrl(String imagenUrl) {this.imagenUrl = imagenUrl;}
+
+
+    public String getPublisherUsername() {
+        return publisherUsername;
+    }
+
+    public void setPublisherUsername(String publisherUsername) {
+        this.publisherUsername = publisherUsername;
+    }
 }

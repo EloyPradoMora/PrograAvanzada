@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import java.io.IOException;
 import java.util.List;
+import java.security.Principal;
 
 @Controller
 public class HomeController {
@@ -84,11 +85,15 @@ public class HomeController {
             @RequestParam("precio") int precio,
             @RequestParam(value = "descripcion", required = false) String descripcion,
             @RequestParam("imagen") MultipartFile imagen,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Principal principal) {
         try {
             Producto nuevoProducto = new Producto();
             nuevoProducto.setNombre(nombre);
             nuevoProducto.setPrecio(precio);
+            if (principal != null) {
+                nuevoProducto.setPublisherUsername(principal.getName());
+            }
             if (descripcion != null)
                 nuevoProducto.setDescripcion(descripcion);
             if (!imagen.isEmpty()) {
