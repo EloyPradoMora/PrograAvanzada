@@ -85,6 +85,18 @@
           <input type="number" id="precio" name="precio" min="1" step="1" placeholder="Ej: 10000" required>
         </div>
         <div class="form-group">
+          <label for="cantidad">Cantidad:</label>
+          <input type="number" id="cantidad" name="cantidad" min="1" step="1" required>
+        </div>
+        <div class="form-group">
+          <label for="estado">Estado:</label>
+          <select id="estado" name="estado" required>
+            <option value="Nuevo">Nuevo</option>
+            <option value="Seminuevo">Seminuevo</option>
+            <option value="Usado">Usado</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label>Imagen del Producto:</label>
           <div class="drop-zone">
             <span class="drop-zone__prompt">Arrastra el archivo aquí o haz clic para subir</span>

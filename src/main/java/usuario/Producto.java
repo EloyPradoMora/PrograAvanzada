@@ -82,4 +82,20 @@ public class Producto {
     public void setPublisherUsername(String publisherUsername) {
         this.publisherUsername = publisherUsername;
     }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public void setEsVisible(boolean esVisible) {
+        this.esVisible = esVisible;
+    }
+
+    public void setFechaPublicacion(String fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
 }

@@ -20,6 +20,8 @@ import java.util.UUID;
 import java.io.IOException;
 import java.util.List;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class HomeController {
@@ -83,6 +85,8 @@ public class HomeController {
     public String addProduct(
             @RequestParam("nombre") String nombre,
             @RequestParam("precio") int precio,
+            @RequestParam("cantidad") int cantidad,
+            @RequestParam("estado") String estado,
             @RequestParam(value = "descripcion", required = false) String descripcion,
             @RequestParam("imagen") MultipartFile imagen,
             RedirectAttributes redirectAttributes,
@@ -91,6 +95,12 @@ public class HomeController {
             Producto nuevoProducto = new Producto();
             nuevoProducto.setNombre(nombre);
             nuevoProducto.setPrecio(precio);
+            nuevoProducto.setCantidad(cantidad);
+            nuevoProducto.setEstado(estado);
+            nuevoProducto.setEsVisible(true);
+            nuevoProducto
+                    .setFechaPublicacion(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+
             if (principal != null) {
                 nuevoProducto.setPublisherUsername(principal.getName());
             }
