@@ -17,11 +17,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
-import java.io.IOException;
 import java.util.List;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class HomeController {
@@ -122,5 +123,18 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("errorMessage", "Error al publicar el producto: " + e.getMessage());
         }
         return "redirect:/inicio";
+    }
+
+    @GetMapping("/product/{id}")
+    public String productDetails(@PathVariable("id") String id, Model model) {
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if (producto != null) {
+            model.addAttribute("producto", producto);
+            if (producto.getPublisherUsername() != null) {
+                Usuario publisher = usuarioService.obtenerUsuarioPorNombre(producto.getPublisherUsername());
+                model.addAttribute("publisher", publisher);
+            }
+        }
+        return "detalleProducto";
     }
 }

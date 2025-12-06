@@ -10,6 +10,7 @@ public class Usuario {
     private String username;
     private String password;
     private String role;
+    private int prestigio;
 
     public Usuario() {
         this.role = "ROLE_USER";
@@ -58,5 +59,13 @@ public class Usuario {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getPrestigio() {
+        return prestigio;
+    }
+
+    public void setPrestigio(int prestigio) {
+        this.prestigio = prestigio;
     }
 }

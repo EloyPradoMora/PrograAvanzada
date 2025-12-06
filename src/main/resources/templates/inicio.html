@@ -60,7 +60,8 @@
           Publicado por: Usuario
         </div>
         <a th:href="@{'/product/' + ${producto.idProducto}}"
-          style="color: blue; font-size: 0.8em; margin-top: 5px; display: inline-block; text-decoration: none; border-bottom: 1px dotted blue;">
+          onclick="window.open(this.href, 'productDetails', 'width=900,height=700,scrollbars=yes'); return false;"
+          style="color: blue; font-size: 0.8em; margin-top: 5px; display: inline-block; text-decoration: none; border-bottom: 1px dotted blue; cursor: pointer;">
           Ver Detalle
         </a>
       </li>

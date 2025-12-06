@@ -70,10 +70,13 @@ public class Producto {
         return idProducto;
     };
 
-    public String getImagenUrl() {return imagenUrl;}
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
 
-    public void setImagenUrl(String imagenUrl) {this.imagenUrl = imagenUrl;}
-
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
 
     public String getPublisherUsername() {
         return publisherUsername;
@@ -81,6 +84,30 @@ public class Producto {
 
     public void setPublisherUsername(String publisherUsername) {
         this.publisherUsername = publisherUsername;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public boolean isEsVisible() {
+        return esVisible;
+    }
+
+    public String getFechaPublicacion() {
+        return fechaPublicacion;
     }
 
     public void setCantidad(int cantidad) {

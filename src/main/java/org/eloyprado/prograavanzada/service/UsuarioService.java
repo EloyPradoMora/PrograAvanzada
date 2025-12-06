@@ -32,4 +32,8 @@ public class UsuarioService {
         newUser.setPassword(passwordEncoder.encode(password));
         usuarioRepository.save(newUser);
     }
+
+    public Usuario obtenerUsuarioPorNombre(String username) {
+        return usuarioRepository.findByUsername(username).orElse(null);
+    }
 }
