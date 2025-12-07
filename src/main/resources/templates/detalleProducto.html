@@ -41,7 +41,9 @@
                 <h3>Sobre el Vendedor:</h3>
                 <p class="publisher-name"
                     th:text="${publisher != null ? publisher.username : producto.publisherUsername}">Vendedor</p>
-                <!-- Aqui agregamos el prestigio -->
+                <p th:if="${publisher != null}" style="font-size: 0.9em; color: #555;">
+                    Prestigio: <span th:text="${publisher.prestigio}">0</span>
+                </p>
                 <button class="action-button">¡Hablar!</button>
             </div>
         </div>
