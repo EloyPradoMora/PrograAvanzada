@@ -654,3 +654,55 @@ body.auth-page .form-group input[type="password"] {
     text-decoration: underline;
     cursor: pointer;
 }
+
+/* =========================================
+   Inbox Page Styles (inbox.html)
+   ========================================= */
+.inbox-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-list {
+    list-style: none;
+    padding: 0;
+}
+
+.chat-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-item:hover {
+    background-color: #f9f9f9;
+}
+
+.chat-item:last-child {
+    border-bottom: none;
+}
+
+.chat-participant {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.chat-preview {
+    color: #666;
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.timestamp {
+    font-size: 0.8em;
+    color: #999;
+    float: right;
+}

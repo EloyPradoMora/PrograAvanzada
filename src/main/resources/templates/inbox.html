@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Inbox</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+
+</head>
+
+<body class="inicio-page">
+    <header class="header-bar">
+        <div class="header-left">
+            <a th:href="@{/inicio}" style="text-decoration: none; font-weight: bold; color: #333; font-size: 1.2em;">
+                &larr; Volver
+            </a>
+        </div>
+        <div class="header-right">
+            <h2>Bandeja de Entrada</h2>
+        </div>
+    </header>
+
+    <div class="inbox-container">
+        <ul class="chat-list" th:if="${not #lists.isEmpty(chats)}">
+            <li th:each="chat : ${chats}" class="chat-item"
+                onclick="alert('Funcionalidad de chat detallado pendiente')">
+                <div class="chat-participant">
+                    <span th:each="participant : ${chat.participants}" th:if="${participant != currentUser}"
+                        th:text="${participant}">Usuario</span>
+                    <span class="timestamp" th:if="${chat.lastMessageDate != null}"
+                        th:text="${#temporals.format(chat.lastMessageDate, 'dd-MM HH:mm')}">12:00</span>
+                </div>
+                <div class="chat-preview" th:text="${chat.lastMessage != null ? chat.lastMessage : 'Sin mensajes'}">
+                    Último mensaje...
+                </div>
+            </li>
+        </ul>
+        <div th:if="${#lists.isEmpty(chats)}" style="text-align: center; color: #666; padding: 20px;">
+            <p>No tienes conversaciones activas.</p>
+        </div>
+    </div>
+</body>
+
+</html>
