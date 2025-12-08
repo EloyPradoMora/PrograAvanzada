@@ -17,6 +17,18 @@ public class Chat {
     private String productName;
     private String productImage;
 
+    public enum Status {
+        ACTIVE,
+        WAITING_SEAL_CONFIRMATION,
+        SEALED,
+        ARCHIVED
+    }
+
+    private Status status = Status.ACTIVE;
+    private String dealInitiator;
+    private boolean buyerRated;
+    private boolean sellerRated;
+
     public Chat() {
     }
 
@@ -82,5 +94,37 @@ public class Chat {
 
     public void setProductImage(String productImage) {
         this.productImage = productImage;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getDealInitiator() {
+        return dealInitiator;
+    }
+
+    public void setDealInitiator(String dealInitiator) {
+        this.dealInitiator = dealInitiator;
+    }
+
+    public boolean isBuyerRated() {
+        return buyerRated;
+    }
+
+    public void setBuyerRated(boolean buyerRated) {
+        this.buyerRated = buyerRated;
+    }
+
+    public boolean isSellerRated() {
+        return sellerRated;
+    }
+
+    public void setSellerRated(boolean sellerRated) {
+        this.sellerRated = sellerRated;
     }
 }

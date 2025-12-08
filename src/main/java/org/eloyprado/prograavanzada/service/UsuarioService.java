@@ -36,4 +36,12 @@ public class UsuarioService {
     public Usuario obtenerUsuarioPorNombre(String username) {
         return usuarioRepository.findByUsername(username).orElse(null);
     }
+
+    public void updatePrestige(String username, int amount) {
+        Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
+        if (usuario != null) {
+            usuario.setPrestigio(usuario.getPrestigio() + amount);
+            usuarioRepository.save(usuario);
+        }
+    }
 }

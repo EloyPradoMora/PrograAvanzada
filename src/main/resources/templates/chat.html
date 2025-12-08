@@ -13,10 +13,70 @@
             <a th:href="@{/inbox}" style="text-decoration: none; font-weight: bold; color: #333; font-size: 1.2em;">
                 &larr; Volver
             </a>
-            <h2 style="margin-left: 20px;" th:each="participant : ${chat.participants}"
-                th:if="${participant != currentUser}" th:text="${participant}">Usuario</h2>
+            <div style="margin-left: 20px;">
+                <h2 style="margin: 0;" th:each="participant : ${chat.participants}"
+                    th:if="${participant != currentUser}" th:text="${participant}">Usuario</h2>
+                <span th:if="${otherPrestige != null}" style="font-size: 0.8em; color: #666;">
+                    Prestigio: <span th:text="${otherPrestige}">0</span>
+                </span>
+            </div>
         </div>
     </header>
+
+    <div class="deal-status-bar">
+        <!-- Trato activo -->
+        <div th:if="${chat.status.name() == 'ACTIVE'}" class="deal-actions">
+            <form th:action="@{'/chat/' + ${chat.id} + '/seal/initiate'}" method="post" style="display:inline;">
+                <button type="submit" class="action-button success">Sellar Trato</button>
+            </form>
+            <form th:action="@{'/chat/' + ${chat.id} + '/cancel'}" method="post" style="display:inline;"
+                onsubmit="return confirm('¿Estás seguro de cancelar este trato? Esto eliminará el chat permanentemente.');">
+                <button type="submit" class="action-button danger">Cancelar Trato</button>
+            </form>
+        </div>
+
+        <!-- Trato esperando confimacion -->
+        <div th:if="${chat.status.name() == 'WAITING_SEAL_CONFIRMATION'}" class="deal-actions">
+            <div th:if="${chat.dealInitiator == currentUser}">
+                <span class="status-msg">Esperando confirmación...</span>
+                <form th:action="@{'/chat/' + ${chat.id} + '/cancel'}" method="post" style="display:inline;"
+                    onsubmit="return confirm('¿Cancelar trato?');">
+                    <button type="submit" class="action-button danger" style="font-size: 0.8em;">Cancelar</button>
+                </form>
+            </div>
+            <div th:if="${chat.dealInitiator != currentUser}">
+                <span class="status-msg">¿Sellar trato?</span>
+                <form th:action="@{'/chat/' + ${chat.id} + '/seal/confirm'}" method="post" style="display:inline;">
+                    <button type="submit" class="action-button success">Confirmar</button>
+                </form>
+                <form th:action="@{'/chat/' + ${chat.id} + '/seal/deny'}" method="post" style="display:inline;">
+                    <button type="submit" class="action-button danger">Rechazar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Trato sellado -->
+        <div th:if="${chat.status.name() == 'SEALED'}" class="deal-actions">
+            <div
+                th:unless="${(chat.participants.indexOf(currentUser) == 0 and chat.buyerRated) or (chat.participants.indexOf(currentUser) != 0 and chat.sellerRated)}">
+                <span>¡Trato Sellado! Califica:</span>
+                <form th:action="@{'/chat/' + ${chat.id} + '/rate'}" method="post" style="display: inline-block;">
+                    <button type="submit" name="rating" value="Bueno" class="action-button success">Bueno</button>
+                    <button type="submit" name="rating" value="Satisfecho" class="action-button neutral">Satisfecho</button>
+                    <button type="submit" name="rating" value="Malo" class="action-button danger">Malo</button>
+                </form>
+            </div>
+            <div
+                th:if="${(chat.participants.indexOf(currentUser) == 0 and chat.buyerRated) or (chat.participants.indexOf(currentUser) != 0 and chat.sellerRated)}">
+                <span style="color: #28a745; font-weight: bold;">¡Has calificado! Esperando al otro usuario...</span>
+            </div>
+        </div>
+
+        <!-- Trato archivado -->
+        <div th:if="${chat.status.name() == 'ARCHIVED'}" class="deal-actions">
+            <span style="color: #666; font-style: italic;">Chat Archivado (Solo lectura)</span>
+        </div>
+    </div>
 
     <div class="chat-container">
         <div class="messages-area">
@@ -31,15 +91,20 @@
             </div>
         </div>
 
-        <form th:action="@{'/chat/' + ${chat.id} + '/send'}" method="post" class="chat-input-area">
+        <form th:if="${chat.status.name() != 'ARCHIVED'}" th:action="@{'/chat/' + ${chat.id} + '/send'}" method="post"
+            class="chat-input-area">
             <input type="text" name="content" placeholder="Escribe un mensaje..." required autocomplete="off"
                 class="chat-input">
             <button type="submit" class="send-button">&#10148;</button>
         </form>
+        <div th:if="${chat.status.name() == 'ARCHIVED'}"
+            style="padding: 15px; text-align: center; background: #eee; border-top: 1px solid #ddd;">
+            Chat cerrado.
+        </div>
     </div>
 
     <script>
-        // Scroll to bottom on load
+        // Ir al final al cargar
         window.onload = function () {
             var messagesArea = document.querySelector('.messages-area');
             messagesArea.scrollTop = messagesArea.scrollHeight;
