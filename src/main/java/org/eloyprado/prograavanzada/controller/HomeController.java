@@ -1,5 +1,7 @@
 package org.eloyprado.prograavanzada.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eloyprado.prograavanzada.Repository.ProductoRepository;
 import org.eloyprado.prograavanzada.service.UsuarioService;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class HomeController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final ProductoRepository productoRepository;
     private final UsuarioService usuarioService;
 
@@ -37,11 +40,13 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
+        logger.info("Accessing index page");
         return "index";
     }
 
     @GetMapping("/inicio")
     public String inicio(Model model) {
+        logger.info("Accessing main home page (inicio)");
         List<Producto> productos = productoRepository.findAll();
         model.addAttribute("productos", productos);
         return "inicio";
@@ -50,7 +55,10 @@ public class HomeController {
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error, Model model) {
         if (error != null) {
+            logger.warn("Login page accessed with error: {}", error);
             model.addAttribute("loginError", true);
+        } else {
+            logger.info("Accessing login page");
         }
         return "login";
     }
@@ -58,6 +66,7 @@ public class HomeController {
     // Rename Method: "especificar que registra" -> mostrarFormularioRegistro
     @GetMapping("/register")
     public String mostrarFormularioRegistro(Model model) {
+        logger.info("Accessing registration form");
         model.addAttribute("usuario", new Usuario());
         return "register";
     }

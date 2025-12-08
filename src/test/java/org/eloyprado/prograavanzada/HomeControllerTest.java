@@ -110,11 +110,18 @@ class HomeControllerTest {
         }
 
         @Test
-        void addProduct_SuccessfulInsert_RedirectsToInicio() throws Exception {
-                mockMvc.perform(post("/products/add")
+        void addProduct_SuccessfullInsert_RedirectsToInicio() throws Exception {
+                org.springframework.mock.web.MockMultipartFile imagen = new org.springframework.mock.web.MockMultipartFile(
+                                "imagen", "test.jpg", "image/jpeg", "test image content".getBytes());
+
+                mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                                .multipart("/products/add")
+                                .file(imagen)
                                 .param("nombre", "Lapiz")
                                 .param("precio", "500")
-                                .param("descripcion", "Azul"))
+                                .param("descripcion", "Azul")
+                                .param("cantidad", "10")
+                                .param("estado", "Nuevo"))
                                 .andExpect(status().is3xxRedirection())
                                 .andExpect(redirectedUrl("/inicio"));
         }

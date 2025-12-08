@@ -128,9 +128,15 @@ class HomeControllerAdvancedTest {
                 doThrow(new RuntimeException("Fallo DB"))
                                 .when(productoRepository).save(any());
 
-                mockMvc.perform(post("/products/add")
+                org.springframework.mock.web.MockMultipartFile imagen = new org.springframework.mock.web.MockMultipartFile(
+                                "imagen", "test.jpg", "image/jpeg", "test image content".getBytes());
+
+                mockMvc.perform(multipart("/products/add")
+                                .file(imagen)
                                 .param("nombre", "Lapiz")
-                                .param("precio", "300"))
+                                .param("precio", "300")
+                                .param("cantidad", "10")
+                                .param("estado", "Nuevo"))
                                 .andExpect(status().is3xxRedirection())
                                 .andExpect(redirectedUrl("/inicio"))
                                 .andExpect(flash().attributeExists("errorMessage"));
