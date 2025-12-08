@@ -54,8 +54,14 @@
         <div class="product-price" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">
           $1000
         </div>
+        <div class="product-publisher" th:if="${producto.publisherUsername != null}"
+          th:text="'Publicado por: ' + ${producto.publisherUsername}"
+          style="font-size: 0.8em; color: gray; margin-top: 5px;">
+          Publicado por: Usuario
+        </div>
         <a th:href="@{'/product/' + ${producto.idProducto}}"
-          style="color: blue; font-size: 0.8em; margin-top: 5px; display: inline-block; text-decoration: none; border-bottom: 1px dotted blue;">
+          onclick="window.open(this.href, 'productDetails', 'width=900,height=700,scrollbars=yes'); return false;"
+          style="color: blue; font-size: 0.8em; margin-top: 5px; display: inline-block; text-decoration: none; border-bottom: 1px dotted blue; cursor: pointer;">
           Ver Detalle
         </a>
       </li>
@@ -78,6 +84,18 @@
         <div class="form-group">
           <label for="precio">Precio ($):</label>
           <input type="number" id="precio" name="precio" min="1" step="1" placeholder="Ej: 10000" required>
+        </div>
+        <div class="form-group">
+          <label for="cantidad">Cantidad:</label>
+          <input type="number" id="cantidad" name="cantidad" min="1" step="1" required>
+        </div>
+        <div class="form-group">
+          <label for="estado">Estado:</label>
+          <select id="estado" name="estado" required>
+            <option value="Nuevo">Nuevo</option>
+            <option value="Seminuevo">Seminuevo</option>
+            <option value="Usado">Usado</option>
+          </select>
         </div>
         <div class="form-group">
           <label>Imagen del Producto:</label>
@@ -147,10 +165,12 @@
     function updateThumbnail(dropZoneElement, file) {
       let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
 
+      // First time - remove the prompt
       if (dropZoneElement.querySelector(".drop-zone__prompt")) {
         dropZoneElement.querySelector(".drop-zone__prompt").remove();
       }
 
+      // First time - there is no thumbnail element, so lets create it
       if (!thumbnailElement) {
         thumbnailElement = document.createElement("div");
         thumbnailElement.classList.add("drop-zone__thumb");
@@ -159,6 +179,7 @@
 
       thumbnailElement.dataset.label = file.name;
 
+      // Show thumbnail for image files
       if (file.type.startsWith("image/")) {
         const reader = new FileReader();
 

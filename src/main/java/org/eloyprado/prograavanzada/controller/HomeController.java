@@ -17,8 +17,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
-import java.io.IOException;
 import java.util.List;
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class HomeController {
@@ -82,13 +86,25 @@ public class HomeController {
     public String addProduct(
             @RequestParam("nombre") String nombre,
             @RequestParam("precio") int precio,
+            @RequestParam("cantidad") int cantidad,
+            @RequestParam("estado") String estado,
             @RequestParam(value = "descripcion", required = false) String descripcion,
             @RequestParam("imagen") MultipartFile imagen,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Principal principal) {
         try {
             Producto nuevoProducto = new Producto();
             nuevoProducto.setNombre(nombre);
             nuevoProducto.setPrecio(precio);
+            nuevoProducto.setCantidad(cantidad);
+            nuevoProducto.setEstado(estado);
+            nuevoProducto.setEsVisible(true);
+            nuevoProducto
+                    .setFechaPublicacion(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+
+            if (principal != null) {
+                nuevoProducto.setPublisherUsername(principal.getName());
+            }
             if (descripcion != null)
                 nuevoProducto.setDescripcion(descripcion);
             if (!imagen.isEmpty()) {
@@ -107,5 +123,21 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("errorMessage", "Error al publicar el producto: " + e.getMessage());
         }
         return "redirect:/inicio";
+    }
+
+    @GetMapping("/product/{id}")
+    public String productDetails(@PathVariable("id") String id, Model model, Principal principal) {
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if (producto != null) {
+            model.addAttribute("producto", producto);
+            if (producto.getPublisherUsername() != null) {
+                Usuario publisher = usuarioService.obtenerUsuarioPorNombre(producto.getPublisherUsername());
+                model.addAttribute("publisher", publisher);
+            }
+            if (principal != null) {
+                model.addAttribute("currentUser", principal.getName());
+            }
+        }
+        return "detalleProducto";
     }
 }

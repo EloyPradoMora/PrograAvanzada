@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+
+</head>
+
+<body>
+
+    <div class="detail-container" th:if="${producto}">
+        <div class="image-section">
+            <img th:if="${producto.imagenUrl != null and !producto.imagenUrl.isEmpty()}"
+                th:src="@{${producto.imagenUrl}}" alt="Imagen del producto" class="product-image-large">
+            <div th:unless="${producto.imagenUrl != null and !producto.imagenUrl.isEmpty()}"
+                class="product-image-placeholder"
+                style="width: 300px; height: 300px; display: flex; align-items: center; justify-content: center; background: #eee; border-radius: 8px;">
+                <span>Sin Imagen</span>
+            </div>
+        </div>
+
+        <div class="product-info">
+            <h1 class="product-title" th:text="${producto.nombre}">Nombre del Producto</h1>
+            <div class="product-price"
+                th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">$0</div>
+
+            <div class="product-meta">
+                <p><strong>Estado:</strong> <span th:text="${producto.estado}">Nuevo</span></p>
+                <p><strong>Cantidad disponible:</strong> <span th:text="${producto.cantidad}">1</span></p>
+                <p><strong>Publicado el:</strong> <span th:text="${producto.fechaPublicacion}">Fecha</span></p>
+            </div>
+
+            <div class="product-description">
+                <h3>Descripción</h3>
+                <p th:text="${producto.descripcion}">Descripción del producto...</p>
+            </div>
+
+            <div class="publisher-info">
+                <h3>Sobre el Vendedor:</h3>
+                <p class="publisher-name"
+                    th:text="${publisher != null ? publisher.username : producto.publisherUsername}">Vendedor</p>
+                <p th:if="${publisher != null}" style="font-size: 0.9em; color: #555;">
+                    Prestigio: <span th:text="${publisher.prestigio}">0</span>
+                </p>
+
+                <form th:action="@{/chat/start}" method="post"
+                    th:if="${currentUser != null and (publisher == null or currentUser != publisher.username) and (producto.publisherUsername != currentUser)}">
+                    <input type="hidden" name="publisherUsername"
+                        th:value="${publisher != null ? publisher.username : producto.publisherUsername}" />
+                    <input type="hidden" name="productId" th:value="${producto.id}" />
+                    <input type="hidden" name="productName" th:value="${producto.nombre}" />
+                    <input type="hidden" name="productImage" th:value="${producto.imagenUrl}" />
+                    <button type="submit" class="action-button">¡Hablar!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${producto}" style="text-align: center; margin-top: 50px;">
+        <h1>Producto no encontrado</h1>
+        <a onclick="window.close()" class="close-window">Cerrar</a>
+    </div>
+
+</body>
+
+</html>

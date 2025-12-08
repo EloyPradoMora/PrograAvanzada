@@ -10,21 +10,25 @@ public class Usuario {
     private String username;
     private String password;
     private String role;
+    private int prestigio;
 
     public Usuario() {
         this.role = "ROLE_USER";
+        this.prestigio = 800;
     }
 
     public Usuario(String username, String password) {
         this.username = username;
         this.password = password;
         this.role = "ROLE_USER";
+        this.prestigio = 800;
     }
 
     public Usuario(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.prestigio = 800;
     }
 
     // Getters y Setters
@@ -58,5 +62,13 @@ public class Usuario {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getPrestigio() {
+        return prestigio;
+    }
+
+    public void setPrestigio(int prestigio) {
+        this.prestigio = prestigio;
     }
 }

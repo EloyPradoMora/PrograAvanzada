@@ -16,6 +16,7 @@ public class Producto {
     private boolean esVisible;
     private String fechaPublicacion;
     private String imagenUrl;
+    private String publisherUsername;
 
     public Producto() {
     }
@@ -69,7 +70,59 @@ public class Producto {
         return idProducto;
     };
 
-    public String getImagenUrl() {return imagenUrl;}
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
 
-    public void setImagenUrl(String imagenUrl) {this.imagenUrl = imagenUrl;}
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
+
+    public String getPublisherUsername() {
+        return publisherUsername;
+    }
+
+    public void setPublisherUsername(String publisherUsername) {
+        this.publisherUsername = publisherUsername;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public boolean isEsVisible() {
+        return esVisible;
+    }
+
+    public String getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public void setEsVisible(boolean esVisible) {
+        this.esVisible = esVisible;
+    }
+
+    public void setFechaPublicacion(String fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
 }
