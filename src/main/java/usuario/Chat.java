@@ -13,11 +13,18 @@ public class Chat {
     private String lastMessage;
     private LocalDateTime lastMessageDate;
 
+    private String productId;
+    private String productName;
+    private String productImage;
+
     public Chat() {
     }
 
-    public Chat(List<String> participants) {
+    public Chat(List<String> participants, String productId, String productName, String productImage) {
         this.participants = participants;
+        this.productId = productId;
+        this.productName = productName;
+        this.productImage = productImage;
         this.lastMessageDate = LocalDateTime.now();
     }
 
@@ -51,5 +58,29 @@ public class Chat {
 
     public void setLastMessageDate(LocalDateTime lastMessageDate) {
         this.lastMessageDate = lastMessageDate;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 }

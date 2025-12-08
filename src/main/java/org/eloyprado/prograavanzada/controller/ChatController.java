@@ -34,13 +34,16 @@ public class ChatController {
     @org.springframework.web.bind.annotation.PostMapping("/chat/start")
     public String startChat(
             @org.springframework.web.bind.annotation.RequestParam("publisherUsername") String publisherUsername,
+            @org.springframework.web.bind.annotation.RequestParam("productId") String productId,
+            @org.springframework.web.bind.annotation.RequestParam("productName") String productName,
+            @org.springframework.web.bind.annotation.RequestParam(value = "productImage", required = false) String productImage,
             Principal principal) {
         if (principal == null) {
             return "redirect:/login";
         }
         String currentUser = principal.getName();
         if (!currentUser.equals(publisherUsername)) {
-            chatService.iniciarChat(currentUser, publisherUsername);
+            chatService.iniciarChat(currentUser, publisherUsername, productId, productName, productImage);
         }
         return "redirect:/inbox";
     }

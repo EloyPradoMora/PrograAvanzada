@@ -29,8 +29,11 @@
                     <span class="timestamp" th:if="${chat.lastMessageDate != null}"
                         th:text="${#temporals.format(chat.lastMessageDate, 'dd-MM HH:mm')}">12:00</span>
                 </div>
-                <div class="chat-preview" th:text="${chat.lastMessage != null ? chat.lastMessage : 'Sin mensajes'}">
-                    Último mensaje...
+                <div class="chat-preview">
+                    <span th:if="${chat.productName != null}" style="font-weight: bold; color: #555;"
+                        th:text="${chat.productName} + ': '">Producto: </span>
+                    <span th:text="${chat.lastMessage != null ? chat.lastMessage : 'Sin mensajes'}">Último
+                        mensaje...</span>
                 </div>
             </li>
         </ul>

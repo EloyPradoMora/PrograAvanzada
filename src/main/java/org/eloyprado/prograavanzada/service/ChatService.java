@@ -23,14 +23,16 @@ public class ChatService {
         return chatRepository.findByParticipantsContaining(username);
     }
 
-    public void iniciarChat(String sender, String recipient) {
-        // Check if chat already exists
+    public void iniciarChat(String sender, String recipient, String productId, String productName,
+            String productImage) {
+        // Ver si el chat ya existe, solo se puede negociar el mismo producto uno a la vez o en un paquete grande a la vez  
         List<Chat> existingChats = chatRepository.findByParticipantsContaining(sender);
         boolean chatExists = existingChats.stream()
-                .anyMatch(chat -> chat.getParticipants().contains(recipient));
+                .anyMatch(chat -> chat.getParticipants().contains(recipient)
+                        && (productId == null ? chat.getProductId() == null : productId.equals(chat.getProductId())));
 
         if (!chatExists) {
-            Chat newChat = new Chat(java.util.List.of(sender, recipient));
+            Chat newChat = new Chat(java.util.List.of(sender, recipient), productId, productName, productImage);
             chatRepository.save(newChat);
         }
     }

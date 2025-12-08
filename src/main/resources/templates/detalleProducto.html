@@ -49,6 +49,9 @@
                     th:if="${currentUser != null and (publisher == null or currentUser != publisher.username) and (producto.publisherUsername != currentUser)}">
                     <input type="hidden" name="publisherUsername"
                         th:value="${publisher != null ? publisher.username : producto.publisherUsername}" />
+                    <input type="hidden" name="productId" th:value="${producto.id}" />
+                    <input type="hidden" name="productName" th:value="${producto.nombre}" />
+                    <input type="hidden" name="productImage" th:value="${producto.imagenUrl}" />
                     <button type="submit" class="action-button">¡Hablar!</button>
                 </form>
             </div>
