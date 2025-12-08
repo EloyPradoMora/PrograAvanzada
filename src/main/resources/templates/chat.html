@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+</head>
+
+<body class="inicio-page">
+    <header class="header-bar">
+        <div class="header-left">
+            <a th:href="@{/inbox}" style="text-decoration: none; font-weight: bold; color: #333; font-size: 1.2em;">
+                &larr; Volver
+            </a>
+            <h2 style="margin-left: 20px;" th:each="participant : ${chat.participants}"
+                th:if="${participant != currentUser}" th:text="${participant}">Usuario</h2>
+        </div>
+    </header>
+
+    <div class="chat-container">
+        <div class="messages-area">
+            <div th:each="mensaje : ${mensajes}"
+                th:class="'message-bubble ' + (${mensaje.sender == currentUser} ? 'sent' : 'received')">
+                <div class="message-content" th:text="${mensaje.content}">Hola</div>
+                <div class="message-time" th:text="${#temporals.format(mensaje.timestamp, 'HH:mm')}">12:00</div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(mensajes)}" style="text-align: center; color: #999; margin-top: 50px;">
+                <p>No hay mensajes aún. ¡Di hola!</p>
+            </div>
+        </div>
+
+        <form th:action="@{'/chat/' + ${chat.id} + '/send'}" method="post" class="chat-input-area">
+            <input type="text" name="content" placeholder="Escribe un mensaje..." required autocomplete="off"
+                class="chat-input">
+            <button type="submit" class="send-button">&#10148;</button>
+        </form>
+    </div>
+
+    <script>
+        // Scroll to bottom on load
+        window.onload = function () {
+            var messagesArea = document.querySelector('.messages-area');
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        };
+    </script>
+</body>
+
+</html>

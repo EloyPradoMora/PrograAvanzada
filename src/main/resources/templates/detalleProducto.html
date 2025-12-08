@@ -44,7 +44,13 @@
                 <p th:if="${publisher != null}" style="font-size: 0.9em; color: #555;">
                     Prestigio: <span th:text="${publisher.prestigio}">0</span>
                 </p>
-                <button class="action-button">¡Hablar!</button>
+
+                <form th:action="@{/chat/start}" method="post"
+                    th:if="${currentUser != null and (publisher == null or currentUser != publisher.username) and (producto.publisherUsername != currentUser)}">
+                    <input type="hidden" name="publisherUsername"
+                        th:value="${publisher != null ? publisher.username : producto.publisherUsername}" />
+                    <button type="submit" class="action-button">¡Hablar!</button>
+                </form>
             </div>
         </div>
     </div>

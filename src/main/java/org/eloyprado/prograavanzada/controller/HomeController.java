@@ -126,13 +126,16 @@ public class HomeController {
     }
 
     @GetMapping("/product/{id}")
-    public String productDetails(@PathVariable("id") String id, Model model) {
+    public String productDetails(@PathVariable("id") String id, Model model, Principal principal) {
         Producto producto = productoRepository.findById(id).orElse(null);
         if (producto != null) {
             model.addAttribute("producto", producto);
             if (producto.getPublisherUsername() != null) {
                 Usuario publisher = usuarioService.obtenerUsuarioPorNombre(producto.getPublisherUsername());
                 model.addAttribute("publisher", publisher);
+            }
+            if (principal != null) {
+                model.addAttribute("currentUser", principal.getName());
             }
         }
         return "detalleProducto";

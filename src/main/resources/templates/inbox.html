@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Inbox</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
-
 </head>
 
 <body class="inicio-page">
@@ -22,8 +21,8 @@
 
     <div class="inbox-container">
         <ul class="chat-list" th:if="${not #lists.isEmpty(chats)}">
-            <li th:each="chat : ${chats}" class="chat-item"
-                onclick="alert('Funcionalidad de chat detallado pendiente')">
+            <li th:each="chat : ${chats}" class="chat-item" th:data-url="@{'/chat/' + ${chat.id}}"
+                onclick="window.location.href=this.getAttribute('data-url')">
                 <div class="chat-participant">
                     <span th:each="participant : ${chat.participants}" th:if="${participant != currentUser}"
                         th:text="${participant}">Usuario</span>
