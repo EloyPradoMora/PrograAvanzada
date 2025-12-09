@@ -12,11 +12,16 @@ import usuario.Chat;
 import usuario.Mensaje;
 import usuario.Usuario;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class ChatController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
     private final ChatService chatService;
     private final UsuarioService usuarioService;
@@ -97,6 +102,7 @@ public class ChatController {
         }
 
         chatService.sendMessage(id, principal.getName(), content);
+        logger.info("Usuario '{}' mandó mensaje a chat '{}'", principal.getName(), id);
         return "redirect:/chat/" + id;
     }
 

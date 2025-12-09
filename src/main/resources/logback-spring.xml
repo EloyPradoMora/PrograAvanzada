@@ -33,8 +33,11 @@
         </rollingPolicy>
     </appender>
 
-    <!-- LOG everything at INFO level -->
-    <root level="info">
+    <!-- Specific logger for our application -->
+    <logger name="org.eloyprado.prograavanzada" level="INFO" />
+
+    <!-- LOG everything at WARN level by default to reduce noise -->
+    <root level="warn">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </root>

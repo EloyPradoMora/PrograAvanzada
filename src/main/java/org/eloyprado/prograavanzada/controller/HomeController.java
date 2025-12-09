@@ -126,6 +126,11 @@ public class HomeController {
                 nuevoProducto.setImagenUrl("/images/products/" + fileName);
             }
             productoRepository.save(nuevoProducto); // Podrías mover esto a ProductoService también
+            if (principal != null) {
+                logger.info("Usuario '{}' agrego nuevo producto: '{}'", principal.getName(), nuevoProducto.getNombre());
+            } else {
+                logger.info("Usuario 'anónimo' agrego nuevo producto: '{}'", nuevoProducto.getNombre());
+            }
             redirectAttributes.addFlashAttribute("successMessage", "¡Producto publicado con éxito!");
         } catch (Exception e) {
             e.printStackTrace();
