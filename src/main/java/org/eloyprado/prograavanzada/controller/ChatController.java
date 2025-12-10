@@ -37,6 +37,7 @@ public class ChatController {
             return "redirect:/login";
         }
         String username = principal.getName();
+        logger.info("{} accessing inbox", username);
         List<Chat> chats = chatService.getChatsForUser(username);
         model.addAttribute("chats", chats);
         model.addAttribute("currentUser", username);
@@ -54,6 +55,7 @@ public class ChatController {
             return "redirect:/login";
         }
         String currentUser = principal.getName();
+        logger.info("{} starting chat with '{}'", currentUser, publisherUsername);
         if (!currentUser.equals(publisherUsername)) {
             chatService.iniciarChat(currentUser, publisherUsername, productId, productName, productImage);
         }
@@ -65,6 +67,7 @@ public class ChatController {
         if (principal == null) {
             return "redirect:/login";
         }
+        logger.info("{} accessing chat '{}'", principal.getName(), id);
         Chat chat = chatService.getChatById(id);
         if (chat == null || !chat.getParticipants().contains(principal.getName())) {
             return "redirect:/inbox";
