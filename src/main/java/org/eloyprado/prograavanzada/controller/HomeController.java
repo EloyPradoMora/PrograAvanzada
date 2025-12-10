@@ -185,6 +185,7 @@ public class HomeController {
         String currentUsername = principal.getName();
 
         if (isAdmin || currentUsername.equals(producto.getPublisherUsername())) {
+            logger.info("Usuario '{}' elimino el producto: '{}'", currentUsername, producto.getNombre());
             productoRepository.delete(producto);
             return "close";
         } else {
