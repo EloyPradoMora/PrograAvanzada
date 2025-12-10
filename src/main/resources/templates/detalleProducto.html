@@ -54,6 +54,15 @@
                     <input type="hidden" name="productImage" th:value="${producto.imagenUrl}" />
                     <button type="submit" class="action-button">¡Hablar!</button>
                 </form>
+
+                <!-- Boton para eliminar producto si es admin o dueño -->
+                <form th:action="@{/product/delete}" method="post"
+                    th:if="${currentUser != null and (isAdmin or currentUser == producto.publisherUsername)}"
+                    onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta publicación? Esta acción no se puede deshacer.');">
+                    <input type="hidden" name="idProducto" th:value="${producto.id}" />
+                    <button type="submit" class="action-button"
+                        style="background-color: #dc3545; margin-top: 10px;">Eliminar Publicación</button>
+                </form>
             </div>
         </div>
     </div>

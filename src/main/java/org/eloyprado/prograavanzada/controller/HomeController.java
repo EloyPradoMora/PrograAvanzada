@@ -18,7 +18,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.List;
+import java.util.List;
 import java.security.Principal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -136,8 +139,38 @@ public class HomeController {
             }
             if (principal != null) {
                 model.addAttribute("currentUser", principal.getName());
+                Authentication auth = (Authentication) principal;
+                boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                model.addAttribute("isAdmin", isAdmin);
             }
         }
         return "detalleProducto";
+    }
+
+    @PostMapping("/product/delete")
+    public String deleteProduct(@RequestParam("idProducto") String idProducto,
+            Principal principal,
+            RedirectAttributes redirectAttributes) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        Producto producto = productoRepository.findById(idProducto).orElse(null);
+        if (producto == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Producto no encontrado.");
+            return "redirect:/inicio";
+        }
+
+        Authentication auth = (Authentication) principal;
+        boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        String currentUsername = principal.getName();
+
+        if (isAdmin || currentUsername.equals(producto.getPublisherUsername())) {
+            productoRepository.delete(producto);
+            return "close";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "No tienes permiso para eliminar este producto.");
+            return "redirect:/inicio";
+        }
     }
 }
