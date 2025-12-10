@@ -1,10 +1,12 @@
 package org.eloyprado.prograavanzada;
 
 import org.eloyprado.prograavanzada.Repository.ProductoRepository;
+import org.eloyprado.prograavanzada.Repository.UsuarioRepository;
 import org.eloyprado.prograavanzada.config.DataInitializer;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import usuario.Producto;
 
 import java.util.List;
@@ -21,9 +23,11 @@ class PrograAvanzadaApplicationTest {
     @Test
     void initialData_insertsProducts_whenRepositoryIsEmpty() throws Exception {
         ProductoRepository mockRepo = Mockito.mock(ProductoRepository.class);
+        UsuarioRepository mockUserRepo = Mockito.mock(UsuarioRepository.class);
+        PasswordEncoder mockPasswordEncoder = Mockito.mock(PasswordEncoder.class);
         when(mockRepo.count()).thenReturn(0L);
 
-        DataInitializer initializer = new DataInitializer(mockRepo);
+        DataInitializer initializer = new DataInitializer(mockRepo, mockUserRepo, mockPasswordEncoder);
         initializer.run();
 
         verify(mockRepo, times(1)).saveAll(any());
@@ -32,9 +36,11 @@ class PrograAvanzadaApplicationTest {
     @Test
     void initialData_doesNotInsertProducts_whenRepositoryNotEmpty() throws Exception {
         ProductoRepository mockRepo = Mockito.mock(ProductoRepository.class);
+        UsuarioRepository mockUserRepo = Mockito.mock(UsuarioRepository.class);
+        PasswordEncoder mockPasswordEncoder = Mockito.mock(PasswordEncoder.class);
         when(mockRepo.count()).thenReturn(5L);
 
-        DataInitializer initializer = new DataInitializer(mockRepo);
+        DataInitializer initializer = new DataInitializer(mockRepo, mockUserRepo, mockPasswordEncoder);
         initializer.run();
 
         verify(mockRepo, never()).saveAll(any());
@@ -43,10 +49,12 @@ class PrograAvanzadaApplicationTest {
     @Test
     void initialData_InsertsCorrectProducts_WhenEmpty() throws Exception {
         ProductoRepository repo = mock(ProductoRepository.class);
+        UsuarioRepository mockUserRepo = Mockito.mock(UsuarioRepository.class);
+        PasswordEncoder mockPasswordEncoder = Mockito.mock(PasswordEncoder.class);
 
         when(repo.count()).thenReturn(0L);
 
-        DataInitializer initializer = new DataInitializer(repo);
+        DataInitializer initializer = new DataInitializer(repo, mockUserRepo, mockPasswordEncoder);
         initializer.run();
 
         verify(repo, times(1)).saveAll(argThat(iterable -> {

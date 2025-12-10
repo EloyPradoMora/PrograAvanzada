@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tienda MISH - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+    <style>
+        /* Estilo especificos de admin */
+        .admin-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background-color: #f1f1f1;
+            border-top: 2px solid #ccc;
+            display: flex;
+            justify-content: space-around;
+            align-items: stretch;
+            z-index: 1000;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .admin-col {
+            flex: 1;
+            border-right: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px;
+        }
+
+        .admin-col:last-child {
+            border-right: none;
+        }
+
+        .admin-col h3 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .admin-list {
+            flex: 1;
+            overflow-y: auto;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-list-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .admin-list-item span {
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 5px;
+        }
+
+        .small-btn {
+            padding: 3px 8px;
+            font-size: 0.8em;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-view {
+            background-color: #007bff;
+        }
+
+        .btn-dl {
+            background-color: #28a745;
+        }
+
+        .btn-add {
+            background-color: #17a2b8;
+        }
+
+        .btn-del {
+            background-color: #dc3545;
+        }
+
+        .store-view {
+            margin-bottom: 320px;
+            /* El espacio para el panel de admin */
+        }
+    </style>
+</head>
+
+<body class="inicio-page">
+    <header class="header-bar">
+        <div class="header-left">
+            <a th:href="@{/perfil}" class="profile-link">
+                <div class="profile-pic">A</div> <span class="header-username"
+                    style="margin-left: 5px; font-weight: bold;">
+                    <span th:text="${#authentication.name}">Admin</span>
+                </span>
+            </a>
+        </div>
+        <div class="search-bar">
+            <input type="search" class="search-input" placeholder="Buscar">
+        </div>
+        <div class="header-right">
+            <a th:href="@{/inbox}" class="icon-button inbox-icon">
+                &#9993;
+            </a>
+            <a th:href="@{/settings}" class="icon-button">
+                &nbsp; </a>
+        </div>
+    </header>
+
+    <div th:if="${successMessage}"
+        style="background-color: #d4edda; color: #155724; padding: 10px; text-align: center;">
+        <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${errorMessage}" style="background-color: #f8d7da; color: #721c24; padding: 10px; text-align: center;">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <div class="container store-view">
+        <h1>Opciones (Vista Admin)</h1>
+        <ul class="product-list">
+            <li th:each="producto : ${productos}" class="product-item">
+                <div class="product-image-container">
+                    <img th:if="${producto.imagenUrl != null and !producto.imagenUrl.isEmpty()}"
+                        th:src="@{${producto.imagenUrl}}" alt="Imagen del producto" class="product-image">
+                    <div th:unless="${producto.imagenUrl != null and !producto.imagenUrl.isEmpty()}"
+                        class="product-image-placeholder">
+                        IMAGEN
+                    </div>
+                </div>
+                <div class="product-name" th:text="${producto.nombre}">
+                    NOMBRE DE PRODUCTO
+                </div>
+                <div class="product-price"
+                    th:text="'$' + ${#numbers.formatDecimal(producto.precio, 0, 'POINT', 0, 'COMMA')}">
+                    $1000
+                </div>
+                <div class="product-publisher" th:if="${producto.publisherUsername != null}"
+                    th:text="'Publicado por: ' + ${producto.publisherUsername}"
+                    style="font-size: 0.8em; color: gray; margin-top: 5px;">
+                </div>
+                <a th:href="@{'/product/' + ${producto.idProducto}}"
+                    onclick="window.open(this.href, 'productDetails', 'width=900,height=700,scrollbars=yes'); return false;"
+                    style="color: blue; font-size: 0.8em; margin-top: 5px; display: inline-block; text-decoration: none; border-bottom: 1px dotted blue; cursor: pointer;">
+                    Ver Detalle
+                </a>
+            </li>
+        </ul>
+        <a href="#" class="floating-action-button" style="bottom: 320px;">
+            <span class="fab-icon">+</span>
+        </a>
+    </div>
+
+    <div class="admin-panel">
+        <div class="admin-col">
+            <h3>Logs de Usuarios</h3>
+            <ul class="admin-list">
+                <li th:each="log : ${userLogs}" class="admin-list-item">
+                    <span th:text="${log}">Log Content</span>
+                    <div class="action-row">
+                        <button class="small-btn btn-view" onclick="viewLog(this)">Ver</button>
+                        <button class="small-btn btn-dl" onclick="downloadLog(this)">Descargar</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="admin-col">
+            <h3>Logs de Productos</h3>
+            <ul class="admin-list">
+                <li th:each="log : ${productLogs}" class="admin-list-item">
+                    <span th:text="${log}">Log Content</span>
+                    <div class="action-row">
+                        <button class="small-btn btn-view" onclick="viewLog(this)">Ver</button>
+                        <button class="small-btn btn-dl" onclick="downloadLog(this)">Descargar</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="admin-col">
+            <h3>Logs de Acceso</h3>
+            <ul class="admin-list">
+                <li th:each="log : ${accessLogs}" class="admin-list-item">
+                    <span th:text="${log}">Log Content</span>
+                    <div class="action-row">
+                        <button class="small-btn btn-view" onclick="viewLog(this)">Ver</button>
+                        <button class="small-btn btn-dl" onclick="downloadLog(this)">Descargar</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="admin-col">
+            <h3>Cambiar Roles</h3>
+            <ul class="admin-list">
+                <li th:each="user : ${allUsers}" class="admin-list-item">
+                    <span
+                        th:text="${user.username} + ' (' + ${user.role == 'ROLE_ADMIN' ? 'Admin' : 'User'} + ')'">Username
+                        (Role)</span>
+
+                    <form th:if="${user.role != 'ROLE_ADMIN'}" th:action="@{/admin/promote-user}" method="post"
+                        style="width: 100%;">
+                        <input type="hidden" name="username" th:value="${user.username}">
+                        <button type="submit" class="small-btn btn-add">Promover</button>
+                    </form>
+
+                    <form th:if="${user.role == 'ROLE_ADMIN'}" th:action="@{/admin/demote-user}" method="post"
+                        style="width: 100%;" onsubmit="return confirm('Demote this admin?');">
+                        <input type="hidden" name="username" th:value="${user.username}">
+                        <button type="submit" class="small-btn"
+                            style="background-color: #ffc107; color: black;">Remover</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <div class="admin-col">
+            <h3>Eliminar Usuario</h3>
+            <ul class="admin-list">
+                <li th:each="user : ${allUsers}" class="admin-list-item">
+                    <span th:text="${user.username}">Username</span>
+                    <form th:action="@{/admin/delete-user}" method="post"
+                        onsubmit="return confirm('Delete this user?');" style="width: 100%;">
+                        <input type="hidden" name="username" th:value="${user.username}">
+                        <button type="submit" class="small-btn btn-del">Eliminar</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+    var addAdminModal = document.getElementById("addAdminModal");
+    function closeAddAdminModal() { addAdminModal.style.display = "none"; }
+    
+    function openPromoteModal(username) {
+        document.getElementById("promoteUsername").value = username;
+        addAdminModal.style.display = "block";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == addAdminModal) { closeAddAdminModal(); }
+    }
+    </script>
+</body>
+
+</html>
