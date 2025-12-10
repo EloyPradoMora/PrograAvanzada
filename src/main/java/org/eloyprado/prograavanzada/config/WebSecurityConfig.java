@@ -39,6 +39,12 @@ public class WebSecurityConfig { // Anteriormente 'SecurityConfig'
                         .loginPage("/login")
                         .successHandler(successHandler)
                         .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
                 .csrf(csrf -> csrf.disable())
                 .build();
     }

@@ -31,8 +31,12 @@
         &#9993;
       </a>
 
-      <a th:href="@{/settings}" class="icon-button">
-        &nbsp; </a>
+      <form th:action="@{/logout}" method="post" style="display: inline;">
+        <button type="submit" class="icon-button"
+          style="border: none; background: none; cursor: pointer; color: white; font-size: 1.2em;" title="Salir">
+          &#10162;
+        </button>
+      </form>
     </div>
   </header>
 
