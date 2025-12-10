@@ -12,11 +12,16 @@ import usuario.Chat;
 import usuario.Mensaje;
 import usuario.Usuario;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class ChatController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
     private final ChatService chatService;
     private final UsuarioService usuarioService;
@@ -32,6 +37,7 @@ public class ChatController {
             return "redirect:/login";
         }
         String username = principal.getName();
+        logger.info("{} accessing inbox", username);
         List<Chat> chats = chatService.getChatsForUser(username);
         model.addAttribute("chats", chats);
         model.addAttribute("currentUser", username);
@@ -49,6 +55,7 @@ public class ChatController {
             return "redirect:/login";
         }
         String currentUser = principal.getName();
+        logger.info("{} starting chat with '{}'", currentUser, publisherUsername);
         if (!currentUser.equals(publisherUsername)) {
             chatService.iniciarChat(currentUser, publisherUsername, productId, productName, productImage);
         }
@@ -60,6 +67,7 @@ public class ChatController {
         if (principal == null) {
             return "redirect:/login";
         }
+        logger.info("{} accessing chat '{}'", principal.getName(), id);
         Chat chat = chatService.getChatById(id);
         if (chat == null || !chat.getParticipants().contains(principal.getName())) {
             return "redirect:/inbox";
@@ -97,6 +105,7 @@ public class ChatController {
         }
 
         chatService.sendMessage(id, principal.getName(), content);
+        logger.info("Usuario '{}' mandó mensaje a chat '{}'", principal.getName(), id);
         return "redirect:/chat/" + id;
     }
 

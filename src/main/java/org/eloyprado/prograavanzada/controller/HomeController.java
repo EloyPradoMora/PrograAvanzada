@@ -1,5 +1,7 @@
 package org.eloyprado.prograavanzada.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eloyprado.prograavanzada.Repository.ProductoRepository;
 import org.eloyprado.prograavanzada.service.UsuarioService;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class HomeController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final ProductoRepository productoRepository;
     private final UsuarioService usuarioService;
 
@@ -39,28 +42,39 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Principal principal) {
+        String username = (principal != null) ? principal.getName() : "Anonymous";
+        logger.info("{} Accessing index page", username);
         return "index";
     }
 
     @GetMapping("/inicio")
-    public String inicio(Model model) {
+    public String inicio(Model model, Principal principal) {
+        String username = (principal != null) ? principal.getName() : "Anonymous";
+        logger.info("{} Accessing main home page (inicio)", username);
         List<Producto> productos = productoRepository.findAll();
         model.addAttribute("productos", productos);
         return "inicio";
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+    public String login(@RequestParam(value = "error", required = false) String error, Model model,
+            Principal principal) {
+        String username = (principal != null) ? principal.getName() : "Anonymous";
         if (error != null) {
+            logger.warn("{} Login page accessed with error: {}", username, error);
             model.addAttribute("loginError", true);
+        } else {
+            logger.info("{} Accessing login page", username);
         }
         return "login";
     }
 
     // Rename Method: "especificar que registra" -> mostrarFormularioRegistro
     @GetMapping("/register")
-    public String mostrarFormularioRegistro(Model model) {
+    public String mostrarFormularioRegistro(Model model, Principal principal) {
+        String username = (principal != null) ? principal.getName() : "Anonymous";
+        logger.info("{} Accessing registration form", username);
         model.addAttribute("usuario", new Usuario());
         return "register";
     }
@@ -120,6 +134,11 @@ public class HomeController {
                 nuevoProducto.setImagenUrl("/images/products/" + fileName);
             }
             productoRepository.save(nuevoProducto); // Podrías mover esto a ProductoService también
+            if (principal != null) {
+                logger.info("Usuario '{}' agrego nuevo producto: '{}'", principal.getName(), nuevoProducto.getNombre());
+            } else {
+                logger.info("Usuario 'anónimo' agrego nuevo producto: '{}'", nuevoProducto.getNombre());
+            }
             redirectAttributes.addFlashAttribute("successMessage", "¡Producto publicado con éxito!");
         } catch (Exception e) {
             e.printStackTrace();
