@@ -15,9 +15,12 @@ public class WebSecurityConfig { // Anteriormente 'SecurityConfig'
     // LCOM4 = 1 (Cohesión Funcional)
 
     private final CustomAuthenticationSuccessHandler successHandler;
+    private final org.eloyprado.prograavanzada.service.CustomOAuth2UserService customOAuth2UserService;
 
-    public WebSecurityConfig(CustomAuthenticationSuccessHandler successHandler) {
+    public WebSecurityConfig(CustomAuthenticationSuccessHandler successHandler,
+            org.eloyprado.prograavanzada.service.CustomOAuth2UserService customOAuth2UserService) {
         this.successHandler = successHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
@@ -37,6 +40,8 @@ public class WebSecurityConfig { // Anteriormente 'SecurityConfig'
                         .permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService))
                         .successHandler(successHandler)
                         .permitAll())
                 .logout(logout -> logout
