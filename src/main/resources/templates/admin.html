@@ -173,39 +173,15 @@
 
     <div class="admin-panel">
         <div class="admin-col">
-            <h3>Logs de Usuarios</h3>
+            <h3>Registros del Sistema</h3>
             <ul class="admin-list">
-                <li th:each="log : ${userLogs}" class="admin-list-item">
-                    <span th:text="${log}">Log Content</span>
+                <li class="admin-list-item">
+                    <span>Archivo: application.log</span>
                     <div class="action-row">
-                        <button class="small-btn btn-view" onclick="viewLog(this)">Ver</button>
-                        <button class="small-btn btn-dl" onclick="downloadLog(this)">Descargar</button>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="admin-col">
-            <h3>Logs de Productos</h3>
-            <ul class="admin-list">
-                <li th:each="log : ${productLogs}" class="admin-list-item">
-                    <span th:text="${log}">Log Content</span>
-                    <div class="action-row">
-                        <button class="small-btn btn-view" onclick="viewLog(this)">Ver</button>
-                        <button class="small-btn btn-dl" onclick="downloadLog(this)">Descargar</button>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="admin-col">
-            <h3>Logs de Acceso</h3>
-            <ul class="admin-list">
-                <li th:each="log : ${accessLogs}" class="admin-list-item">
-                    <span th:text="${log}">Log Content</span>
-                    <div class="action-row">
-                        <button class="small-btn btn-view" onclick="viewLog(this)">Ver</button>
-                        <button class="small-btn btn-dl" onclick="downloadLog(this)">Descargar</button>
+                        <a href="/admin/logs/view" target="_blank" class="small-btn btn-view"
+                            style="text-align: center; text-decoration: none; padding-top: 5px;">Ver</a>
+                        <a href="/admin/logs/download" class="small-btn btn-dl"
+                            style="text-align: center; text-decoration: none; padding-top: 5px;">Descargar</a>
                     </div>
                 </li>
             </ul>
@@ -251,17 +227,17 @@
     </div>
 
     <script>
-    var addAdminModal = document.getElementById("addAdminModal");
-    function closeAddAdminModal() { addAdminModal.style.display = "none"; }
-    
-    function openPromoteModal(username) {
-        document.getElementById("promoteUsername").value = username;
-        addAdminModal.style.display = "block";
-    }
+        var addAdminModal = document.getElementById("addAdminModal");
+        function closeAddAdminModal() { addAdminModal.style.display = "none"; }
 
-    window.onclick = function (event) {
-      if (event.target == addAdminModal) { closeAddAdminModal(); }
-    }
+        function openPromoteModal(username) {
+            document.getElementById("promoteUsername").value = username;
+            addAdminModal.style.display = "block";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == addAdminModal) { closeAddAdminModal(); }
+        }
     </script>
 </body>
 

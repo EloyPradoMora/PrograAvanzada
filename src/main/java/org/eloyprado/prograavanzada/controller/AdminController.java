@@ -38,11 +38,44 @@ public class AdminController {
         model.addAttribute("allUsers", allUsers);
         model.addAttribute("nonAdmins", nonAdmins);
 
-        model.addAttribute("userLogs", List.of("Log 1: User Login", "Log 2: User Error", "Log 3: User Update"));
-        model.addAttribute("productLogs",
-                List.of("Log 1: Product Added (Publisher)", "Log 2: Product Sold (Publisher)"));
-        model.addAttribute("accessLogs", List.of("Log 1: Access /admin", "Log 2: Access /inicio"));
         return "admin";
+    }
+
+    @GetMapping("/logs/view")
+    public org.springframework.http.ResponseEntity<String> viewLogs() {
+        try {
+            java.nio.file.Path logPath = java.nio.file.Paths.get("logs", "application.log");
+            if (java.nio.file.Files.exists(logPath)) {
+                String content = java.nio.file.Files.readString(logPath);
+                return org.springframework.http.ResponseEntity.ok()
+                        .contentType(org.springframework.http.MediaType.TEXT_PLAIN)
+                        .body(content);
+            } else {
+                return org.springframework.http.ResponseEntity.ok("El archivo de log no existe aún.");
+            }
+        } catch (java.io.IOException e) {
+            return org.springframework.http.ResponseEntity.internalServerError()
+                    .body("Error al leer el log: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/logs/download")
+    public org.springframework.http.ResponseEntity<org.springframework.core.io.Resource> downloadLogs() {
+        try {
+            java.nio.file.Path logPath = java.nio.file.Paths.get("logs", "application.log");
+            if (java.nio.file.Files.exists(logPath)) {
+                org.springframework.core.io.Resource resource = new org.springframework.core.io.UrlResource(
+                        logPath.toUri());
+                return org.springframework.http.ResponseEntity.ok()
+                        .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION,
+                                "attachment; filename=\"application.log\"")
+                        .body(resource);
+            } else {
+                return org.springframework.http.ResponseEntity.notFound().build();
+            }
+        } catch (java.net.MalformedURLException e) {
+            return org.springframework.http.ResponseEntity.internalServerError().build();
+        }
     }
 
     @PostMapping("/promote-user")
